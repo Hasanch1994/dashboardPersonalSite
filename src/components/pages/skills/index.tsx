@@ -168,13 +168,10 @@ const Skills = () => {
               {skills &&
                 skills.map((item) => (
                   <tr
-                    key={self.crypto.randomUUID()}
-                    className="bg-white  border-b hover:bg-gray-50 "
+                    key={item._id}
+                    className="bg-white border-b hover:bg-gray-50"
                   >
-                    <td
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                    >
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                       {item.name}
                     </td>
 
@@ -182,11 +179,14 @@ const Skills = () => {
                       <ProgressBar percent={item.value} />
                     </td>
 
-                    <td className="px-6 py-4 flex items-center justify-center">
+                    <td className="px-6 py-4">
                       <PortalWithState closeOnEsc>
                         {({ openPortal, closePortal, isOpen }) => (
                           <>
-                            <span className="iconRipple" onClick={openPortal}>
+                            <span
+                              className="cursor-pointer"
+                              onClick={openPortal}
+                            >
                               <svg
                                 className="w-4 h-4 text-gray-500 transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white"
                                 fill="#f20707"
@@ -229,11 +229,14 @@ const Skills = () => {
                       </PortalWithState>
                     </td>
 
-                    <td className="px-6 py-4 flex items-center justify-center">
+                    <td className="px-6 py-4 ">
                       <PortalWithState closeOnEsc>
                         {({ openPortal, closePortal, isOpen, portal }) => (
                           <>
-                            <span className="iconRipple" onClick={openPortal}>
+                            <span
+                              className="cursor-pointer"
+                              onClick={openPortal}
+                            >
                               <svg
                                 fill="#7e6fc8"
                                 className="w-4 h-4 text-gray-500 transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white"
