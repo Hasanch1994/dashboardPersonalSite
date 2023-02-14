@@ -10,6 +10,7 @@ import Main from "./components/main/main";
 import Inbox from "./components/pages/inbox";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Skills from "./components/pages/skills";
+import Portfolios from "./components/pages/portfolios";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/inbox" element={<Inbox />} />
             <Route path="/skills" element={<Skills />} />
+            <Route path="/portfolios" element={<Portfolios />} />
 
             {/* <Route path="customers" element={<Customers />} />
           <Route path="deals" element={<Deals />} />

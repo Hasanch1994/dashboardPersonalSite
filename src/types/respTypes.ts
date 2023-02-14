@@ -23,3 +23,11 @@ export interface skillTypeResponse extends Pick<inboxTypeResponse,"_id"> {
   name: string;
   value: string | number;
 }
+
+
+export interface portfolioTypeResponse extends Pick<inboxTypeResponse,"_id"> {
+  title:string,
+  description:string,
+  date:number | string,
+  imageUrls:Array<string>
+}

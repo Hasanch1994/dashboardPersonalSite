@@ -1,6 +1,7 @@
 import { msgType } from "./../../../types/defaultTypes";
 import {
   inboxTypeResponse,
+  portfolioTypeResponse,
   skillTypeResponse,
 } from "./../../../types/respTypes";
 import api from "../httpService";
@@ -66,4 +67,15 @@ export const editSkillApi = async (
   ).data;
   if (result) return result;
   else throw new Error("failed to edit skill");
+};
+
+// get portfolios
+export const fetchPortfoliosApi = async (): Promise<
+  Array<portfolioTypeResponse>
+> => {
+  const result: Array<portfolioTypeResponse> = await (
+    await api.get("/action/portfolios")
+  ).data;
+  if (result) return result;
+  else throw new Error("failed to fetch portfolios");
 };

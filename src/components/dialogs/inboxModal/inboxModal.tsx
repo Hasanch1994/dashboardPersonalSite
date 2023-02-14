@@ -34,7 +34,7 @@ const InboxModal: FC<InboxModalProps> = ({
 
   return (
     <div className="w-full sm:mx-0 sm:w-1/3 sm:h-2/3 overflow-auto bg-white rounded-lg shadow-2xl shadow-gray-200 border border-gray-200 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
-      <header className="relative top-0 left-0 w-full h-11 rounded-tr-lg rounded-tl-lg bg-gray-50 px-2 py-3">
+      <header className="relative top-0 left-0 w-full h-11 rounded-tr-lg rounded-tl-lg bg-blue-200 px-2 py-3">
         <span
           onClick={onClose}
           className="absolute right-0 top-1/2 -translate-y-1/2 mr-3 iconRipple"
