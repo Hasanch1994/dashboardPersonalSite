@@ -121,7 +121,7 @@ const SideBar = () => {
 
   return (
     <div className="sm:max-w-[16rem] flex-col">
-      <header className="flex sm:hidden bg-white shadow-lg shadow-gray-300 z-50">
+      <header className="flex sm:hidden bg-white shadow-lg shadow-gray-300 z-40">
         <span
           onClick={handleCloseToggle}
           data-drawer-target="sidebar-multi-level-sidebar"

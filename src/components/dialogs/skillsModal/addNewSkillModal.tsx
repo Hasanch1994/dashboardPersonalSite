@@ -1,6 +1,5 @@
 import { FC, useId, useState } from "react";
-import { skillTypeResponse } from "../../../types/respTypes";
-import Input from "../../majors/input/Input";
+
 import JForm from "../../majors/form/Form";
 import JInput from "../../majors/input/Input";
 import JButton from "../../majors/buttons/Button";
@@ -10,18 +9,14 @@ import { addSkillTypeRequest } from "../../../types/reqTypes";
 import { addSkillApi } from "../../../libs/services/endpoints/actions";
 import { errorType, msgType } from "../../../types/defaultTypes";
 import { messages } from "../../../messages";
+import withClickOutside from "../../../hocs/outsideModalClick";
 
 interface addNewSkillModalProps {
   onClose(): void;
   onUpdate(data: addSkillTypeRequest, _id: string): void;
-  nodeRef: any;
 }
 
-const AddSkillModal: FC<addNewSkillModalProps> = ({
-  onClose,
-  onUpdate,
-  nodeRef,
-}) => {
+const AddSkillModal: FC<addNewSkillModalProps> = ({ onClose, onUpdate }) => {
   const [inputData, setInputData] = useState<addSkillTypeRequest>();
   const [nameError, setNameError] = useState<errorType>({
     status: false,
@@ -58,10 +53,7 @@ const AddSkillModal: FC<addNewSkillModalProps> = ({
   };
 
   return (
-    <div
-      ref={nodeRef}
-      className="w-full  sm:mx-0 sm:w-1/3 sm:min-h-72 overflow-auto bg-white rounded-lg shadow-2xl shadow-gray-200 border border-gray-200 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50"
-    >
+    <div className="w-full componentFade  sm:mx-0 sm:w-1/3 sm:min-h-72 overflow-auto bg-white rounded-lg shadow-2xl shadow-gray-200 border border-gray-200 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
       <header className="relative top-0 left-0 w-full h-11 rounded-tr-lg rounded-tl-lg bg-blue-200 px-2 py-3">
         <span
           onClick={onClose}
@@ -170,4 +162,4 @@ const AddSkillModal: FC<addNewSkillModalProps> = ({
   );
 };
 
-export default AddSkillModal;
+export default withClickOutside(AddSkillModal);

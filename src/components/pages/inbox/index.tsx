@@ -1,10 +1,11 @@
 import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { fetchInboxApi } from "../../../libs/services/endpoints/actions";
-import { convertTime } from "../../helper/convertTime";
+import { convertDateTime } from "../../helper/convertDateTime";
 import { PortalWithState } from "react-portal";
 import InboxPagination from "./inboxTools/inboxPaggination";
 import { inboxTypeResponse } from "../../../types/respTypes";
+import InboxModal from "../../dialogs/inboxModal/inboxModal";
 
 const Inbox = () => {
   const [totalInbox, setTotalInbox] = useState<number>(0);
@@ -41,8 +42,6 @@ const Inbox = () => {
     if (type === "increment") setCurrentPage(currentPage + 1);
     else setCurrentPage(currentPage - 1);
   };
-
-  const InboxModal = lazy(() => import("../../dialogs/inboxModal/inboxModal"));
 
   const updateVisitedPost = (id: string) => {
     const filteredData =
@@ -125,10 +124,10 @@ const Inbox = () => {
                     </td>
                     <td className="px-6 py-4">{item.emailAddress}</td>
                     <td className="px-6 py-4">{item.requestType}</td>
-                    <td className="px-6 py-4">{convertTime(item.date)}</td>
+                    <td className="px-6 py-4">{convertDateTime(item.date)}</td>
                     <td className="px-6 py-4 text-right flex justify-end">
                       <PortalWithState closeOnOutsideClick closeOnEsc>
-                        {({ openPortal, closePortal, isOpen, portal }) => (
+                        {({ openPortal, closePortal, isOpen }) => (
                           <>
                             <span className="iconRipple" onClick={openPortal}>
                               <svg
@@ -146,18 +145,15 @@ const Inbox = () => {
                                 </g>
                               </svg>
                             </span>
-                            <Suspense>
-                              {isOpen && (
-                                <InboxModal
-                                  data={item}
-                                  onUpdateMessage={(id) =>
-                                    updateVisitedPost(id)
-                                  }
-                                  onClose={closePortal}
-                                  key={self.crypto.randomUUID()}
-                                />
-                              )}
-                            </Suspense>
+                            {isOpen && (
+                              <InboxModal
+                                data={item}
+                                onClickOutside={closePortal}
+                                onUpdateMessage={(id) => updateVisitedPost(id)}
+                                onClose={closePortal}
+                                key={self.crypto.randomUUID()}
+                              />
+                            )}
                           </>
                         )}
                       </PortalWithState>

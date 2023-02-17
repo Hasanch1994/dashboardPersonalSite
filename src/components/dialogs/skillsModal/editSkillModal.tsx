@@ -9,18 +9,17 @@ import { editSkillApi } from "../../../libs/services/endpoints/actions";
 import { errorType } from "../../../types/defaultTypes";
 import { messages } from "../../../messages";
 import { skillTypeResponse } from "../../../types/respTypes";
+import withClickOutside from "../../../hocs/outsideModalClick";
 
 interface editSkillModalProps {
   onClose(): void;
   onUpdate(data: editSkillTypeRequest): void;
-  nodeRef: any;
   preData: skillTypeResponse;
 }
 
 const EditSkillModal: FC<editSkillModalProps> = ({
   onClose,
   onUpdate,
-  nodeRef,
   preData,
 }) => {
   const [inputData, setInputData] = useState<editSkillTypeRequest>();
@@ -63,10 +62,7 @@ const EditSkillModal: FC<editSkillModalProps> = ({
   };
 
   return (
-    <div
-      ref={nodeRef}
-      className="w-full  sm:mx-0 sm:w-1/3 sm:min-h-72 overflow-auto bg-white rounded-lg shadow-2xl shadow-gray-200 border border-gray-200 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50"
-    >
+    <div className="w-full componentFade  sm:mx-0 sm:w-1/3 sm:min-h-72 overflow-auto bg-white rounded-lg shadow-2xl shadow-gray-200 border border-gray-200 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
       <header className="relative top-0 left-0 w-full h-11 rounded-tr-lg rounded-tl-lg bg-blue-200 px-2 py-3">
         <span
           onClick={onClose}
@@ -171,4 +167,4 @@ const EditSkillModal: FC<editSkillModalProps> = ({
   );
 };
 
-export default EditSkillModal;
+export default withClickOutside(EditSkillModal);

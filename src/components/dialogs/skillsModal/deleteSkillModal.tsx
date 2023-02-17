@@ -4,22 +4,21 @@ import JButton from "../../majors/buttons/Button";
 import OutLineButton from "../../majors/buttons/OutlineButton";
 import { useMutation } from "react-query";
 import { deleteSkillApi } from "../../../libs/services/endpoints/actions";
+import withClickOutside from "../../../hocs/outsideModalClick";
 
 interface deleteSkillModalProps {
+  data: skillTypeResponse;
   onClose(): void;
   onUpdate(id: string): void;
-  data: skillTypeResponse;
-  nodeRef: any;
 }
 
 const DeleteSkillModal: FC<deleteSkillModalProps> = ({
   onClose,
   onUpdate,
   data,
-  nodeRef,
 }) => {
   const { mutate, isLoading } = useMutation("deleteSkill", deleteSkillApi, {
-    onSuccess: ({ msg }) => {
+    onSuccess: () => {
       onClose();
       onUpdate(data._id);
     },
@@ -33,10 +32,7 @@ const DeleteSkillModal: FC<deleteSkillModalProps> = ({
   };
 
   return (
-    <div
-      ref={nodeRef}
-      className="w-full sm:mx-0 sm:w-1/3 sm:min-h-72  overflow-auto bg-white rounded-lg shadow-2xl shadow-gray-200 border border-gray-200 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50"
-    >
+    <div className="componentFade w-full sm:mx-0 sm:w-1/3 sm:min-h-72  overflow-auto bg-white rounded-lg shadow-2xl shadow-gray-200 border border-gray-200 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
       <header className="relative top-0 left-0 w-full h-11 rounded-tr-lg rounded-tl-lg bg-blue-200 px-2 py-3">
         <span
           onClick={onClose}
@@ -93,4 +89,4 @@ const DeleteSkillModal: FC<deleteSkillModalProps> = ({
   );
 };
 
-export default DeleteSkillModal;
+export default withClickOutside(DeleteSkillModal);

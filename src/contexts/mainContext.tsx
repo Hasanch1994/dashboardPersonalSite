@@ -1,4 +1,5 @@
 import React, { ReactNode, createContext, useState } from "react";
+import { portfolioTypeResponse } from "../types/respTypes";
 
 export interface toastType {
   state: boolean;
@@ -7,9 +8,32 @@ export interface toastType {
   position: "bottomRight" | "topRight";
 }
 
+export interface updatePortfolioList {
+  state: boolean;
+  itemId: string;
+}
+
+export interface deletePortfolioType {
+  state: boolean;
+  itemId: string;
+}
+
+export interface showPortfolioItem {
+  item?: portfolioTypeResponse;
+  portfolioItemState: boolean;
+}
+
+export interface updatePortfolioList extends deletePortfolioType {}
+
 export type mainContextType = {
   toast: toastType;
   showToast: (data: toastType) => void;
+  deletePortfolio: deletePortfolioType;
+  showDeletePortfolio: (data: deletePortfolioType) => void;
+  updatePortfolio: updatePortfolioList;
+  showUpdatePortfolioList: (data: updatePortfolioList) => void;
+  portfolioItem: showPortfolioItem;
+  showPortfolioItem: (data: showPortfolioItem) => void;
 };
 
 export const MainContext = createContext<mainContextType | null>(null);
@@ -25,8 +49,45 @@ const MainProvider: React.FC<ReactNode | any> = ({ children }) => {
     setToast(data);
   };
 
+  const [deletePortfolio, setShowDeletePortfolio] =
+    useState<deletePortfolioType>({
+      itemId: "",
+      state: false,
+    });
+
+  const showDeletePortfolio = (data: deletePortfolioType) => {
+    setShowDeletePortfolio(data);
+  };
+
+  const [updatePortfolio, setShowUpdatePortfolio] =
+    useState<updatePortfolioList>({ itemId: "", state: false });
+
+  const showUpdatePortfolioList = (data: updatePortfolioList) => {
+    setShowUpdatePortfolio(data);
+  };
+
+  const [portfolioItem, setShowPortfolioItem] = useState<showPortfolioItem>({
+    item: undefined,
+    portfolioItemState: false,
+  });
+
+  const showPortfolioItem = (data: showPortfolioItem) => {
+    setShowPortfolioItem(data);
+  };
+
   return (
-    <MainContext.Provider value={{ toast, showToast }}>
+    <MainContext.Provider
+      value={{
+        toast,
+        showToast,
+        deletePortfolio,
+        showDeletePortfolio,
+        updatePortfolio,
+        showUpdatePortfolioList,
+        portfolioItem,
+        showPortfolioItem,
+      }}
+    >
       {children}
     </MainContext.Provider>
   );

@@ -61,3 +61,19 @@ button[class="outlinedButton"]{
 .spanLink{
   @apply text-blue-600 text-base cursor-pointer transition-all ease-in duration-100
 }
+
+
+
+.componentFade {
+  opacity: 0;
+  animation: showComponent 0.2s ease forwards;
+}
+
+@keyframes showComponent {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -55,7 +55,7 @@ export const deleteSkillApi = async (id: string): Promise<msgType> => {
     await api.delete(`/action/deleteSkill/${id}`)
   ).data;
   if (result) return result;
-  else throw new Error("failed to add new skill");
+  else throw new Error("failed to delete skill");
 };
 
 //update skills
@@ -78,4 +78,13 @@ export const fetchPortfoliosApi = async (): Promise<
   ).data;
   if (result) return result;
   else throw new Error("failed to fetch portfolios");
+};
+
+// delete skill
+export const deletePortfolioApi = async (id: string): Promise<msgType> => {
+  const result: msgType = await (
+    await api.delete(`/action/deletePortfolio/${id}`)
+  ).data;
+  if (result) return result;
+  else throw new Error("failed to delete portfolio");
 };

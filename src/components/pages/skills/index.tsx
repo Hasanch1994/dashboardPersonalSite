@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { fetchSkillsApi } from "../../../libs/services/endpoints/actions";
-import { PortalWithState } from "react-portal";
+import { Portal, PortalWithState } from "react-portal";
 import { Suspense, lazy, useContext, useEffect, useRef, useState } from "react";
 import ProgressBar from "./progressBar/progressBar";
 import {
@@ -14,6 +14,7 @@ import "./style.css";
 import DeleteSkillModal from "../../dialogs/skillsModal/deleteSkillModal";
 import AddSkillModal from "../../dialogs/skillsModal/addNewSkillModal";
 import EditSkillModal from "../../dialogs/skillsModal/editSkillModal";
+import { portalNode } from "../../helper/nodes";
 
 const Skills = () => {
   const [skills, setSkills] = useState<Array<skillTypeResponse>>([]);
@@ -91,8 +92,8 @@ const Skills = () => {
         {/* table tools */}
 
         <div className="px-5 w-full">
-          <PortalWithState closeOnOutsideClick closeOnEsc>
-            {({ openPortal, closePortal, isOpen, portal }) => (
+          <PortalWithState>
+            {({ openPortal, closePortal, isOpen }) => (
               <>
                 <span
                   className="spanLink flex items-center w-28 gap-x-1"
@@ -126,22 +127,13 @@ const Skills = () => {
                   </svg>
                   add new skill
                 </span>
-
-                <CSSTransition
-                  nodeRef={addNodeRef}
-                  in={isOpen}
-                  timeout={300}
-                  classNames="alert"
-                  onExit={closePortal}
-                  unmountOnExit
-                >
+                {isOpen && (
                   <AddSkillModal
-                    nodeRef={addNodeRef}
+                    onClickOutside={closePortal}
                     onClose={closePortal}
                     onUpdate={listInsertUpdate}
-                    key={self.crypto.randomUUID()}
                   />
-                </CSSTransition>
+                )}
               </>
             )}
           </PortalWithState>
@@ -208,22 +200,15 @@ const Skills = () => {
                               </svg>
                             </span>
 
-                            <CSSTransition
-                              nodeRef={deleteNodeRef}
-                              in={isOpen}
-                              timeout={300}
-                              classNames="alert"
-                              onExit={closePortal}
-                              unmountOnExit
-                            >
+                            {isOpen && (
                               <DeleteSkillModal
-                                nodeRef={deleteNodeRef}
                                 data={item}
+                                onClickOutside={closePortal}
                                 onUpdate={listDeleteUpdate}
                                 onClose={closePortal}
                                 key={self.crypto.randomUUID()}
                               />
-                            </CSSTransition>
+                            )}
                           </>
                         )}
                       </PortalWithState>
@@ -231,7 +216,7 @@ const Skills = () => {
 
                     <td className="px-6 py-4 ">
                       <PortalWithState closeOnEsc>
-                        {({ openPortal, closePortal, isOpen, portal }) => (
+                        {({ openPortal, closePortal, isOpen }) => (
                           <>
                             <span
                               className="cursor-pointer"
@@ -257,22 +242,15 @@ const Skills = () => {
                                 </g>
                               </svg>
                             </span>
-                            <CSSTransition
-                              nodeRef={updateNodeRef}
-                              in={isOpen}
-                              timeout={300}
-                              classNames="alert"
-                              onExit={closePortal}
-                              unmountOnExit
-                            >
+                            {isOpen && (
                               <EditSkillModal
-                                nodeRef={updateNodeRef}
                                 preData={item}
+                                onClickOutside={closePortal}
                                 onUpdate={listUpdate}
                                 onClose={closePortal}
                                 key={self.crypto.randomUUID()}
                               />
-                            </CSSTransition>
+                            )}
                           </>
                         )}
                       </PortalWithState>

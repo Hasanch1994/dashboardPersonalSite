@@ -1,9 +1,10 @@
 import { FC, useEffect } from "react";
 import { inboxTypeResponse } from "../../../types/respTypes";
-import { convertTime } from "../../helper/convertTime";
+import { convertDateTime } from "../../helper/convertDateTime";
 import InboxModalItem from "./inboxModalItem";
 import { useMutation } from "react-query";
 import { updateInboxMessageApi } from "../../../libs/services/endpoints/actions";
+import withClickOutside from "../../../hocs/outsideModalClick";
 
 interface InboxModalProps {
   data: inboxTypeResponse;
@@ -33,7 +34,7 @@ const InboxModal: FC<InboxModalProps> = ({
   }, []);
 
   return (
-    <div className="w-full sm:mx-0 sm:w-1/3 sm:h-2/3 overflow-auto bg-white rounded-lg shadow-2xl shadow-gray-200 border border-gray-200 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
+    <div className="w-full componentFade sm:mx-0 sm:w-1/3 sm:h-2/3 overflow-auto bg-white rounded-lg shadow-2xl shadow-gray-200 border border-gray-200 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
       <header className="relative top-0 left-0 w-full h-11 rounded-tr-lg rounded-tl-lg bg-blue-200 px-2 py-3">
         <span
           onClick={onClose}
@@ -86,7 +87,7 @@ const InboxModal: FC<InboxModalProps> = ({
         <InboxModalItem
           index={3}
           name={"Date Time"}
-          value={convertTime(data.date)}
+          value={convertDateTime(data.date)}
         />
         <InboxModalItem index={4} name={"Message"} value={data.message} />
       </article>
@@ -94,4 +95,4 @@ const InboxModal: FC<InboxModalProps> = ({
   );
 };
 
-export default InboxModal;
+export default withClickOutside(InboxModal);

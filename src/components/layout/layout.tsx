@@ -1,47 +1,49 @@
 import { Outlet, useLocation } from "react-router-dom";
-import SideBar from "./sidebar/sidebar";
-import { FC, useContext, useRef, useState } from "react";
+import { FC, useContext } from "react";
 import { MainContext, mainContextType } from "../../contexts/mainContext";
-import { PortalWithState } from "react-portal";
+import { Portal } from "react-portal";
+
+import SideBar from "./sidebar/sidebar";
 import ToastMessage from "../dialogs/toastify/toastMessage";
-import { CSSTransition } from "react-transition-group";
+import DeletePortfolioModal from "../dialogs/portfolioModal/deletePortfolioModal";
+import PortfolioFullItem from "../dialogs/portfolioModal/portfolioFullItem";
 import "./style.css";
+import { portalNode } from "../helper/nodes";
+
 const Layout: FC = () => {
   const location = useLocation();
-  const [pathName] = useState<string>(location.pathname);
-  const { toast } = useContext(MainContext) as mainContextType;
-  const nodeRef = useRef(null);
+  const { toast, deletePortfolio, portfolioItem } = useContext(
+    MainContext
+  ) as mainContextType;
+
   return (
     <div className="w-full h-full flex flex-col sm:flex-row">
-      {pathName !== "/login" && <SideBar />}
+      {location.pathname !== "/login" && <SideBar />}
       <main className={`w-full flex h-full sm:ml-64`}>
         <Outlet />
       </main>
 
-      <PortalWithState closeOnEsc>
-        {({ closePortal }) => (
-          <>
-            <CSSTransition
-              nodeRef={nodeRef}
-              in={toast.state}
-              timeout={300}
-              classNames="alert"
-              onExit={closePortal}
-              unmountOnExit
-            >
-              {toast.type && toast.message && (
-                <ToastMessage
-                  nodeRef={nodeRef}
-                  type={toast.type}
-                  message={toast.message}
-                  position={toast.position}
-                  key={self.crypto.randomUUID()}
-                />
-              )}
-            </CSSTransition>
-          </>
+      <Portal node={portalNode}>
+        {toast.state && (
+          <ToastMessage
+            type={toast.type ?? "success"}
+            message={toast.message ?? ""}
+            position={toast.position}
+          />
         )}
-      </PortalWithState>
+      </Portal>
+
+      <Portal node={portalNode}>
+        {deletePortfolio.state && (
+          <DeletePortfolioModal id={deletePortfolio.itemId} />
+        )}
+      </Portal>
+
+      {portfolioItem.portfolioItemState && (
+        <Portal node={portalNode}>
+          <PortfolioFullItem />
+        </Portal>
+      )}
     </div>
   );
 };
