@@ -1,22 +1,31 @@
 import axios from "axios";
+import tokenService from "./tokenService";
+import { headerJsonConfig, headerMultipartConfig } from "./headerConfig";
 
 const serverBaseUrl = "http://127.0.0.1:9187";
-import tokenService from "./tokenService";
+
 const instance = axios.create({
   baseURL: serverBaseUrl,
   timeout: 20000,
-  headers: {
-    "Content-Type": "application/json",
-    accept: "application/json",
-  },
 });
 
+function getHeaders(data: any) {
+  if (data instanceof FormData) {
+    return headerMultipartConfig;
+  } else {
+    return headerJsonConfig;
+  }
+}
+
 instance.interceptors.request.use(
-  (request) => {
+  (request: any) => {
     const token = tokenService.getLocalAccessToken();
     if (token) {
+      request.headers = { ...request.headers, ...getHeaders(request.data) };
       request.headers["x-access-token"] = "Bearer " + token;
     }
+
+    console.log("heder", request.headers);
     // Edit request config
     return request;
   },
@@ -48,6 +57,8 @@ instance.interceptors.response.use(
         }
       }
     }
+
+    return Promise.reject(err);
   }
 );
 

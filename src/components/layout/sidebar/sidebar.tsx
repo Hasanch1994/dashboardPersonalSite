@@ -1,5 +1,6 @@
 import { useState } from "react";
-import SideBarItem, { sidebarItemProps } from "./sidebarItem";
+import { SidebarItemProps } from "./sidebarItem";
+import SidebarAside from "./sidebarAside";
 
 const SideBar = () => {
   const [toggle, setToggle] = useState<boolean>(false);
@@ -8,8 +9,9 @@ const SideBar = () => {
     setToggle((pre) => !pre);
   };
 
-  const items: Array<sidebarItemProps> = [
+  const items: Array<SidebarItemProps> = [
     {
+      id: 1,
       title: "dashboard",
       icon: (
         <svg
@@ -25,8 +27,9 @@ const SideBar = () => {
       ),
       linkDestination: "/",
     },
-
     {
+      id: 2,
+
       title: "Inbox",
       icon: (
         <svg
@@ -43,6 +46,8 @@ const SideBar = () => {
       linkDestination: "/inbox",
     },
     {
+      id: 3,
+
       title: "Skills",
       icon: (
         <svg
@@ -66,6 +71,7 @@ const SideBar = () => {
       linkDestination: "/skills",
     },
     {
+      id: 4,
       title: "Portfolio",
       icon: (
         <svg
@@ -84,6 +90,8 @@ const SideBar = () => {
       linkDestination: "/portfolios",
     },
     {
+      id: 5,
+
       title: "experiences",
       icon: (
         <svg
@@ -99,6 +107,7 @@ const SideBar = () => {
       linkDestination: "/experiences",
     },
     {
+      id: 6,
       title: "logout",
       icon: (
         <svg
@@ -146,26 +155,7 @@ const SideBar = () => {
         </span>
       </header>
 
-      <aside
-        id="sidebar-multi-level-sidebar"
-        className={`w-64 z-30 h-screen border-r shadow-md transition-transform  absolute top-13 left-0 sm:fixed sm:top-0 sm:left-0 ${
-          !toggle && "-translate-x-full"
-        } sm:translate-x-0 `}
-        aria-label="Sidebar"
-      >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-white ">
-          <ul className="space-y-3">
-            {items.map((item) => (
-              <SideBarItem
-                key={self.crypto.randomUUID()}
-                title={item.title}
-                icon={item.icon}
-                linkDestination={item.linkDestination}
-              />
-            ))}
-          </ul>
-        </div>
-      </aside>
+      <SidebarAside items={items} toggle={toggle} />
       {/* overlay layer */}
       {toggle && (
         <div

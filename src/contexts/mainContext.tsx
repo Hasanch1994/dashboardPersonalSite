@@ -34,6 +34,8 @@ export type mainContextType = {
   showUpdatePortfolioList: (data: updatePortfolioList) => void;
   portfolioItem: showPortfolioItem;
   showPortfolioItem: (data: showPortfolioItem) => void;
+  addPortfolio: boolean;
+  showAddPortfolio: (state: boolean) => void;
 };
 
 export const MainContext = createContext<mainContextType | null>(null);
@@ -75,6 +77,12 @@ const MainProvider: React.FC<ReactNode | any> = ({ children }) => {
     setShowPortfolioItem(data);
   };
 
+  const [addPortfolio, setAddPortfolio] = useState<boolean>(false);
+
+  const showAddPortfolio = (state: boolean) => {
+    setAddPortfolio(state);
+  };
+
   return (
     <MainContext.Provider
       value={{
@@ -86,6 +94,8 @@ const MainProvider: React.FC<ReactNode | any> = ({ children }) => {
         showUpdatePortfolioList,
         portfolioItem,
         showPortfolioItem,
+        addPortfolio,
+        showAddPortfolio,
       }}
     >
       {children}

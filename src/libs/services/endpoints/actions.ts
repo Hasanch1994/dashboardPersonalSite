@@ -1,4 +1,5 @@
 import { msgType } from "./../../../types/defaultTypes";
+
 import {
   inboxTypeResponse,
   portfolioTypeResponse,
@@ -80,11 +81,20 @@ export const fetchPortfoliosApi = async (): Promise<
   else throw new Error("failed to fetch portfolios");
 };
 
-// delete skill
+// delete portfolio
 export const deletePortfolioApi = async (id: string): Promise<msgType> => {
   const result: msgType = await (
     await api.delete(`/action/deletePortfolio/${id}`)
   ).data;
   if (result) return result;
   else throw new Error("failed to delete portfolio");
+};
+const headers = { "Content-Type": "multipart/form-data" };
+
+export const addPortfolioApi = async (data: any): Promise<msgType> => {
+  const result: msgType = await (
+    await api.post("/action/addPortfolio", data)
+  ).data;
+  if (result) return result;
+  else throw new Error("failed to add new portfolio");
 };

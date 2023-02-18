@@ -1,61 +1,51 @@
-import { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useQuery } from "react-query";
 import { fetchInboxApi } from "../../../libs/services/endpoints/actions";
 import { convertDateTime } from "../../helper/convertDateTime";
 import { PortalWithState } from "react-portal";
-import InboxPagination from "./inboxTools/inboxPaggination";
 import { inboxTypeResponse } from "../../../types/respTypes";
 import InboxModal from "../../dialogs/inboxModal/inboxModal";
+import InboxPagination from "./inboxTools/inboxPaggination";
+import { portalNode } from "../../helper/nodes";
+import { createPortal } from "react-dom";
+
+const POSTS_PER_PAGE = 5;
 
 const Inbox = () => {
-  const [totalInbox, setTotalInbox] = useState<number>(0);
-  const [postsPerPage] = useState<number>(15);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [posts, setPosts] = useState<Array<inboxTypeResponse>>();
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const [currentPosts, setCurrentPosts] = useState<Array<inboxTypeResponse>>();
-  const { data, isLoading, isError, isIdle } = useQuery(
-    "inbox",
-    fetchInboxApi,
-    {
-      staleTime: 60000,
-      onSuccess: (data) => {
-        if (data) {
-          setPosts(data);
-          setCurrentPosts(
-            data && data.slice(indexOfFirstPost, indexOfLastPost)
-          );
+  const [totalInbox, setTotalInbox] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [posts, setPosts] = useState<inboxTypeResponse[]>([]);
+  const indexOfLastPost = currentPage * POSTS_PER_PAGE;
+  const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
+  const { data } = useQuery("inbox", fetchInboxApi, {
+    onSuccess: (data) => {
+      setPosts(data ?? []);
+      setCurrentPage(1);
+      setTotalInbox(data.length);
+    },
+    onError: () => {},
+  });
 
-          setTotalInbox(data.length);
-        }
-      },
-      onError: () => {},
-    }
+  const currentPosts = posts.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
   );
 
-  useEffect(() => {
-    setCurrentPosts(data && data.slice(indexOfFirstPost, indexOfLastPost));
-  }, [currentPage]);
-
-  const paginate = (type: string) => {
-    if (type === "increment") setCurrentPage(currentPage + 1);
-    else setCurrentPage(currentPage - 1);
-  };
-
-  const updateVisitedPost = (id: string) => {
-    const filteredData =
-      posts &&
-      posts.map((item) => {
-        if (item._id === id) {
-          return { ...item, visited: true };
-        } else return item;
-      });
-
-    setCurrentPosts(
-      filteredData && filteredData.slice(indexOfFirstPost, indexOfLastPost)
+  const paginate = useCallback((type: "increment" | "decrement") => {
+    setCurrentPage((prevPage) =>
+      type === "increment" ? prevPage + 1 : prevPage - 1
     );
-  };
+  }, []);
+
+  const updateVisitedPost = useCallback(
+    (id: string) => {
+      const filteredData = posts.map((item) =>
+        item._id === id ? { ...item, visited: true } : item
+      );
+      setPosts(filteredData);
+    },
+    [posts]
+  );
 
   return (
     <>
@@ -75,11 +65,11 @@ const Inbox = () => {
         <div className="relative w-full h-12 left-0 top-0 p-5">
           {data && (
             <InboxPagination
-              totalInbox={totalInbox}
               indexOfFirstPost={indexOfFirstPost}
               indexOfLastPost={indexOfLastPost}
+              totalInbox={totalInbox}
               currentPage={currentPage}
-              postPerPage={postsPerPage}
+              postPerPage={POSTS_PER_PAGE}
               paginate={paginate}
             />
           )}
@@ -145,15 +135,19 @@ const Inbox = () => {
                                 </g>
                               </svg>
                             </span>
-                            {isOpen && (
-                              <InboxModal
-                                data={item}
-                                onClickOutside={closePortal}
-                                onUpdateMessage={(id) => updateVisitedPost(id)}
-                                onClose={closePortal}
-                                key={self.crypto.randomUUID()}
-                              />
-                            )}
+                            {isOpen &&
+                              createPortal(
+                                <InboxModal
+                                  data={item}
+                                  onClickOutside={closePortal}
+                                  onUpdateMessage={(id) =>
+                                    updateVisitedPost(id)
+                                  }
+                                  onClose={closePortal}
+                                  key={self.crypto.randomUUID()}
+                                />,
+                                portalNode!
+                              )}
                           </>
                         )}
                       </PortalWithState>

@@ -11,6 +11,14 @@ const PortfolioFullItem: FC = () => {
 
   const [showDescription, setShowDescription] = useState<boolean>(false);
 
+  const handleDescriptionClick = () => {
+    setShowDescription((prev) => !prev);
+  };
+
+  const handlePortfolioItemClick = () => {
+    showPortfolioItem({ portfolioItemState: false, item: undefined });
+  };
+
   return (
     <main className="componentFade flex flex-col w-full h-full absolute top-0 left-0 right-0 bottom-0 bg-gray-900 z-50">
       <header className="w-full p-3 relative h-14 bg-gray-50/10">
@@ -20,9 +28,7 @@ const PortfolioFullItem: FC = () => {
 
         <span
           title="close"
-          onClick={() => {
-            showPortfolioItem({ portfolioItemState: false, item: undefined });
-          }}
+          onClick={handlePortfolioItemClick}
           className="absolute right-0 top-1/2 -translate-y-1/2 mr-3 cursor-pointer"
         >
           <svg
@@ -50,7 +56,7 @@ const PortfolioFullItem: FC = () => {
 
         {/* show description */}
         <span
-          onClick={() => setShowDescription((pre) => !pre)}
+          onClick={handleDescriptionClick}
           title="read description"
           className="absolute left-0 top-1/2 -translate-y-1/2 ml-3 cursor-pointer"
         >
@@ -112,10 +118,10 @@ const PortfolioFullItem: FC = () => {
           />
         )}
 
-        {showDescription && (
+        {showDescription && portfolioItem.item && (
           <div className="animComponent absolute left-0 top-0 right-0 bottom-0 w-full h-full bg-gray-800/90 p-4 overflow-y-auto">
             <pre className="text-white text-base whitespace-pre-wrap font-mono">
-              {portfolioItem.item?.description}
+              {portfolioItem.item.description}
             </pre>
           </div>
         )}

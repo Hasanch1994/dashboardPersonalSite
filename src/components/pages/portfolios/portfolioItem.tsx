@@ -42,7 +42,7 @@ const PortfolioItem: FC<portfolioItemProps> = memo(({ data, onClick }) => {
             width={"100%"}
             height={"100%"}
             alt={data.title}
-            src={data.imageUrls[0]}
+            src={data.imageUrls[data.imageUrls.length - 1]}
           />
         </LazyLoad>
       </div>
@@ -54,9 +54,7 @@ const PortfolioItem: FC<portfolioItemProps> = memo(({ data, onClick }) => {
               {data.title}
             </a>
           </h3>
-          <p className="mt-1 text-sm text-gray-500">
-            {convertDate(Number(data.date))}
-          </p>
+          <p className="mt-1 text-sm text-gray-500">{data.date}</p>
         </div>
 
         <span className="relative cursor-pointer" onClick={handlePopoverClick}>

@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { fetchSkillsApi } from "../../../libs/services/endpoints/actions";
-import { Portal, PortalWithState } from "react-portal";
-import { Suspense, lazy, useContext, useEffect, useRef, useState } from "react";
+import { PortalWithState } from "react-portal";
+import { useContext, useState } from "react";
 import ProgressBar from "./progressBar/progressBar";
 import {
   addSkillTypeRequest,
@@ -9,40 +9,33 @@ import {
 } from "../../../types/reqTypes";
 import { skillTypeResponse } from "../../../types/respTypes";
 import { MainContext, mainContextType } from "../../../contexts/mainContext";
-import { CSSTransition } from "react-transition-group";
 import "./style.css";
 import DeleteSkillModal from "../../dialogs/skillsModal/deleteSkillModal";
 import AddSkillModal from "../../dialogs/skillsModal/addNewSkillModal";
 import EditSkillModal from "../../dialogs/skillsModal/editSkillModal";
-import { portalNode } from "../../helper/nodes";
 
 const Skills = () => {
-  const [skills, setSkills] = useState<Array<skillTypeResponse>>([]);
+  const [skills, setSkills] = useState<skillTypeResponse[]>([]);
   const { showToast } = useContext(MainContext) as mainContextType;
-  const deleteNodeRef = useRef(null);
-  const updateNodeRef = useRef(null);
-  const addNodeRef = useRef(null);
-  const { isLoading } = useQuery("skills", fetchSkillsApi, {
-    staleTime: 160000,
+
+  useQuery("skills", fetchSkillsApi, {
     onSuccess: (data) => {
       setSkills(data);
     },
   });
 
   const listInsertUpdate = (skill: addSkillTypeRequest, _id: string) => {
-    const cp = skills && [...skills];
-    if (cp) {
-      cp.unshift({ _id: _id, name: skill.name, value: skill.value });
+    const cp = [...skills];
+    cp.unshift({ _id, name: skill.name, value: skill.value });
 
-      setSkills(cp);
+    setSkills(cp);
 
-      showToast({
-        message: "new skill added successfully",
-        position: "bottomRight",
-        state: true,
-        type: "success",
-      });
-    }
+    showToast({
+      message: "New skill added successfully",
+      position: "bottomRight",
+      state: true,
+      type: "success",
+    });
   };
 
   const listDeleteUpdate = (_id: string) => {
@@ -51,7 +44,7 @@ const Skills = () => {
     setSkills(cp);
 
     showToast({
-      message: "skill Deleted successfully",
+      message: "Skill deleted successfully",
       position: "bottomRight",
       state: true,
       type: "success",
@@ -69,16 +62,15 @@ const Skills = () => {
     setSkills(cp);
 
     showToast({
-      message: "skill updated successfully",
+      message: "Skill updated successfully",
       position: "bottomRight",
       state: true,
       type: "success",
     });
   };
-
   return (
     <>
-      <div className="justify-center w-full">
+      <div className="w-full">
         <header className="w-full flex">
           <caption className="p-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800">
             your skills

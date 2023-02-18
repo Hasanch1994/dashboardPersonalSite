@@ -1,9 +1,10 @@
-import { ReactElement, useEffect, useState } from "react";
+import { HTMLProps, useEffect, useState } from "react";
 import { errorType } from "../../../types/defaultTypes";
 
-export interface formProps {
+export interface formProps extends HTMLProps<HTMLFormElement> {
   children?: JSX.Element | JSX.Element[];
   error?: errorType;
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const ErrorMessage = ({ status, message }: errorType) => {
@@ -25,9 +26,9 @@ const ErrorMessage = ({ status, message }: errorType) => {
   );
 };
 
-const JForm = ({ children, error, ...props }: formProps) => {
+const JForm = ({ children, error, onSubmit, ...props }: formProps) => {
   return (
-    <form {...props}>
+    <form onSubmit={onSubmit} {...props}>
       {children}
       {error?.status && (
         <ErrorMessage status={error.status} message={error.message} />

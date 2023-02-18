@@ -1,1 +1,2 @@
-export const portalNode = document.getElementById("portal-root");
+export const portalNode: HTMLElement | null =
+  document.getElementById("portal-root");

@@ -7,6 +7,43 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+}
+
+
+
+
+/* customize scrollbar */
+
+
+/* Customize scrollbar for WebKit-based browsers */
+/* ::-webkit-scrollbar {
+  width: 10px; /* Set the width of the scrollbar */
+
+
+::-webkit-scrollbar-thumb {
+  background-color: #b9b9b9; /* Set the color of the thumb */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #fefefe; /* Set the color of the track */
+} 
+
+
+/* hide scrollbar */
+
+
+/* Hide scrollbar but still allow scrolling for WebKit-based browsers */
+.hideScroll {
+  overflow: auto; /* Enable scrolling */
+}
+
+.hideScroll::-webkit-scrollbar {
+  width: 4px; /* Set the width of the scrollbar to be very thin */
+}
+
+.hideScroll::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0); /* Set the color of the thumb to be the same as the background */
 }
 
 
@@ -22,7 +59,7 @@ p{
   @apply text-base text-gray-900
 }
 
-input[type="text"],input[type="password"],input[type="number"]{
+input[type="text"],input[type="password"],input[type="number"],input[type="date"],textarea{
   @apply p-3 bg-white outline-none ring-0 border border-blue-200 focus:shadow-lg focus:shadow-blue-100 rounded-md transition-all ease-in duration-100 
 }
 

@@ -14,3 +14,12 @@ export interface editSkillTypeRequest
   extends Pick<addSkillTypeRequest, "name" | "value"> {
   id: string;
 }
+
+// portfolio types
+export interface addPortfolioTypeRequest {
+  title: string;
+  description: string;
+  date: string;
+  githubLink: string;
+  Image: File[];
+}
