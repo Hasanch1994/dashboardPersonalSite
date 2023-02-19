@@ -4,6 +4,7 @@ import JButton from "../../majors/buttons/Button";
 import OutLineButton from "../../majors/buttons/OutlineButton";
 import { deletePortfolioApi } from "../../../libs/services/endpoints/actions";
 import { MainContext, mainContextType } from "../../../contexts/mainContext";
+import withClickOutside from "../../../hocs/outsideModalClick";
 
 interface DeletePortfolioModalProps {
   id: string;
@@ -83,4 +84,4 @@ const DeletePortfolioModal: FC<DeletePortfolioModalProps> = ({ id }) => {
   );
 };
 
-export default DeletePortfolioModal;
+export default withClickOutside(DeletePortfolioModal);

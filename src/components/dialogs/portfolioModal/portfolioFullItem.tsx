@@ -3,6 +3,7 @@ import { MainContext, mainContextType } from "../../../contexts/mainContext";
 import Carousel from "../../carousel";
 
 import "./style.css";
+import { Link } from "react-router-dom";
 
 const PortfolioFullItem: FC = () => {
   const { portfolioItem, showPortfolioItem } = useContext(
@@ -104,6 +105,20 @@ const PortfolioFullItem: FC = () => {
             </svg>
           )}
         </span>
+
+        {/* github link */}
+
+        {portfolioItem.item && portfolioItem.item.githubLink && (
+          <Link
+            target="_blank"
+            title="github link"
+            to={portfolioItem.item.githubLink}
+          >
+            <span className="absolute left-11 top-1/2 -translate-y-1/2 ml-3 cursor-pointer text-white text-base">
+              Github
+            </span>
+          </Link>
+        )}
       </header>
       <div className="flex min-w-full h-full relative">
         {portfolioItem.item && (

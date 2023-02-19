@@ -20,7 +20,7 @@ const PortfolioMoreOption: FC<Props> = ({
         <div
           id="popover-hover"
           role="tooltip"
-          className="componentFade absolute z-10 right-full inline-block min-w-[9rem] text-sm font-light text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-1"
+          className="componentFade absolute z-10 right-full inline-block min-w-[9rem] text-sm font-light text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg opacity-1"
         >
           <div className="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg ">
             <h3 className="font-semibold text-gray-900 ">actions</h3>

@@ -89,7 +89,6 @@ export const deletePortfolioApi = async (id: string): Promise<msgType> => {
   if (result) return result;
   else throw new Error("failed to delete portfolio");
 };
-const headers = { "Content-Type": "multipart/form-data" };
 
 export const addPortfolioApi = async (data: any): Promise<msgType> => {
   const result: msgType = await (

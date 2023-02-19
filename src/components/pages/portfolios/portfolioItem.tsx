@@ -1,10 +1,9 @@
 import { portfolioTypeResponse } from "../../../types/respTypes";
-import { FC, memo, useContext, useEffect, useRef, useState } from "react";
+import { FC, memo, useContext, useRef, useState } from "react";
 import LazyLoad from "react-lazy-load";
 import "./style.css";
 
 import { MainContext, mainContextType } from "../../../contexts/mainContext";
-import { convertDate } from "../../helper/convertDate";
 import PortfolioMoreOption from "./moreOption";
 interface portfolioItemProps {
   data: portfolioTypeResponse;
@@ -13,7 +12,6 @@ interface portfolioItemProps {
 
 const PortfolioItem: FC<portfolioItemProps> = memo(({ data, onClick }) => {
   const [showMore, setShowMore] = useState<boolean>(false);
-  const popoverRef = useRef(null);
   const { showDeletePortfolio, showPortfolioItem } = useContext(
     MainContext
   ) as mainContextType;
@@ -33,18 +31,20 @@ const PortfolioItem: FC<portfolioItemProps> = memo(({ data, onClick }) => {
   return (
     <div
       onClick={handlePortfolioItemClick}
-      className="group relative select-none z-10"
+      className="group relative select-none z-10 shadow-lg p-2 rounded-md"
     >
-      <div className="h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200  lg:aspect-none lg:h-80">
-        <LazyLoad height={"100%"} threshold={0.5}>
-          <img
-            className="object-cover object-center  w-full h-full group-hover:scale-105 transition duration-500 cursor-pointer"
-            width={"100%"}
-            height={"100%"}
-            alt={data.title}
-            src={data.imageUrls[data.imageUrls.length - 1]}
-          />
-        </LazyLoad>
+      <div className="h-56 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200  lg:aspect-none lg:h-72">
+        {data.imageUrls && data.imageUrls.length > 0 && (
+          <LazyLoad height={"100%"} threshold={0.5}>
+            <img
+              className="object-cover object-center  w-full h-full group-hover:scale-105 transition duration-500 cursor-pointer"
+              width={"100%"}
+              height={"100%"}
+              alt={data.title}
+              src={data.imageUrls[0]}
+            />
+          </LazyLoad>
+        )}
       </div>
       <div className="mt-4 flex justify-between">
         <div>

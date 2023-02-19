@@ -12,9 +12,8 @@ import { portalNode } from "../helper/nodes";
 
 const Layout: FC = () => {
   const location = useLocation();
-  const { toast, deletePortfolio, portfolioItem } = useContext(
-    MainContext
-  ) as mainContextType;
+  const { toast, deletePortfolio, portfolioItem, showDeletePortfolio } =
+    useContext(MainContext) as mainContextType;
 
   return (
     <div className="w-full h-full flex flex-col sm:flex-row">
@@ -35,7 +34,12 @@ const Layout: FC = () => {
 
       <Portal node={portalNode}>
         {deletePortfolio.state && (
-          <DeletePortfolioModal id={deletePortfolio.itemId} />
+          <DeletePortfolioModal
+            onClickOutside={() =>
+              showDeletePortfolio({ itemId: "", state: false })
+            }
+            id={deletePortfolio.itemId}
+          />
         )}
       </Portal>
 

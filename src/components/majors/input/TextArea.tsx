@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, memo, useId } from "react";
+import React, { InputHTMLAttributes, useId } from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   error?: {
@@ -8,30 +8,29 @@ export interface InputProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   rows?: number;
   cols?: number;
 }
-const JTextArea = ({ error, rows, cols, ...props }: InputProps) => {
+const JTextArea = ({ error, rows = 3, cols, ...props }: InputProps) => {
   const uId = useId();
+  const errorStatus = error?.status;
 
   return (
     <>
-      {error?.status ? (
-        <>
-          <textarea
-            rows={rows}
-            cols={cols}
-            id={uId}
-            {...props}
-            className="text-red-500 shadow-lg shadow-red-200 focus:shadow-lg focus:shadow-red-200"
-          />
-
-          <label className="text-red-500 text-base" htmlFor={uId}>
-            {error.message}
-          </label>
-        </>
-      ) : (
-        <textarea rows={rows} cols={cols} id={uId} {...props} />
+      <textarea
+        rows={rows}
+        cols={cols}
+        id={uId}
+        {...props}
+        className={
+          errorStatus
+            ? "text-red-500 shadow-lg shadow-red-200 focus:shadow-lg focus:shadow-red-200"
+            : ""
+        }
+      />
+      {errorStatus && (
+        <label className="text-red-500 text-base mt-1" htmlFor={uId}>
+          {error.message}
+        </label>
       )}
     </>
   );
 };
-
-export default memo(JTextArea);
+export default React.memo(JTextArea);

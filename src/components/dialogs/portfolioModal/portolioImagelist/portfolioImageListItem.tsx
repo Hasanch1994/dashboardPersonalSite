@@ -1,10 +1,11 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import LazyLoad from "react-lazy-load";
 interface Props {
   file: File;
   alt?: string;
+  handleRemoveFile: () => void;
 }
-const PortfolioImageListItem: FC<Props> = ({ file, alt }) => {
+const PortfolioImageListItem: FC<Props> = ({ file, alt, handleRemoveFile }) => {
   return (
     <div className="w-32 h-28 relative">
       <img
@@ -13,7 +14,10 @@ const PortfolioImageListItem: FC<Props> = ({ file, alt }) => {
         alt={alt}
       />
 
-      <span className="absolute -top-2 -right-3 p-1 bg-gray-200 cursor-pointer rounded-full">
+      <span
+        onClick={handleRemoveFile}
+        className="absolute -top-2 -right-3 p-1 bg-gray-200 cursor-pointer rounded-full"
+      >
         <svg
           className="w-4 h-4"
           viewBox="0 0 24 24"
@@ -72,5 +76,4 @@ const PortfolioImageListItem: FC<Props> = ({ file, alt }) => {
     </div>
   );
 };
-
 export default PortfolioImageListItem;

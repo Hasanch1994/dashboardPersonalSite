@@ -41,7 +41,7 @@ const Portfolios = () => {
     <>
       <div className="w-full">
         <header className="w-full flex">
-          <caption className="p-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+          <caption className="p-5  text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800">
             Portfolios
             <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
               Here, you can declare your portfolio with images, title,date and
@@ -86,14 +86,19 @@ const Portfolios = () => {
                   </svg>
                   add new portfolio
                 </span>
-                {isOpen && <AddPortfolioModal onClickOutside={closePortal} />}
+                {isOpen && (
+                  <AddPortfolioModal
+                    onClose={closePortal}
+                    onClickOutside={closePortal}
+                  />
+                )}
               </>
             )}
           </PortalWithState>
         </div>
 
         <div className="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl ">
-          <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+          <div className=" grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             <PortfolioItems portfolios={portfolios} />
           </div>
         </div>

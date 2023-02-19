@@ -29,5 +29,6 @@ export interface portfolioTypeResponse extends Pick<inboxTypeResponse,"_id"> {
   title:string,
   description:string,
   date:number | string,
+  githubLink:string,
   imageUrls:Array<string>
 }
