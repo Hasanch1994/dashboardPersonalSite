@@ -4,7 +4,7 @@ import LazyLoad from "react-lazy-load";
 import "./style.css";
 
 import { MainContext, mainContextType } from "../../../contexts/mainContext";
-import PortfolioMoreOption from "./moreOption";
+import MoreOption from "../../popover/moreOption";
 interface portfolioItemProps {
   data: portfolioTypeResponse;
   onClick: () => void;
@@ -12,7 +12,7 @@ interface portfolioItemProps {
 
 const PortfolioItem: FC<portfolioItemProps> = memo(({ data, onClick }) => {
   const [showMore, setShowMore] = useState<boolean>(false);
-  const { showDeletePortfolio, showPortfolioItem } = useContext(
+  const { showMoreOptionDelete, showPortfolioItem } = useContext(
     MainContext
   ) as mainContextType;
   function handleClickOutside() {
@@ -70,12 +70,12 @@ const PortfolioItem: FC<portfolioItemProps> = memo(({ data, onClick }) => {
             />
           </svg>
 
-          <PortfolioMoreOption
+          <MoreOption
             id={data._id}
+            type="portfolio"
             onClickOutside={handleClickOutside}
             show={showMore}
             handlePortfolioItemClick={handlePortfolioItemClick}
-            showDeletePortfolio={showDeletePortfolio}
           />
         </span>
       </div>

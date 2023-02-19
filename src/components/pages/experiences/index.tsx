@@ -1,51 +1,53 @@
 import { useQuery } from "react-query";
-import { fetchPortfoliosApi } from "../../../libs/services/endpoints/actions";
+import { fetchExperiencesApi } from "../../../libs/services/endpoints/actions";
 import { useContext, useEffect, useState } from "react";
-import { MainContext, mainContextType } from "../../../contexts/mainContext";
-import { portfolioTypeResponse } from "../../../types/respTypes";
-import PortfolioItems from "./portfolioItems";
+import { experiencesTypeResponse } from "../../../types/respTypes";
 import { PortalWithState } from "react-portal";
 import AddPortfolioModal from "../../dialogs/portfolioModal/addPortfolioModal";
+import ExperiencesItems from "./experiencesItems";
+import { MainContext, mainContextType } from "../../../contexts/mainContext";
 
-const Portfolios = () => {
-  const { data } = useQuery("portfolios", fetchPortfoliosApi, {
+const Experiences = () => {
+  const { data } = useQuery("experiences", fetchExperiencesApi, {
     onSuccess: (data) => {
-      setPortfolios(data);
+      setExperiences(data);
     },
   });
 
-  const [portfolios, setPortfolios] = useState<Array<portfolioTypeResponse>>(
-    []
-  );
   const { updateList, showUpdateList, showToast } = useContext(
     MainContext
   ) as mainContextType;
 
   useEffect(() => {
-    if (updateList.itemId && updateList.type === "portfolio")
+    if (updateList.itemId && updateList.type === "experience")
       listDeleteUpdate();
   }, [updateList.state]);
 
+  const [experiences, setExperiences] = useState<
+    Array<experiencesTypeResponse>
+  >([]);
+
   const listDeleteUpdate = () => {
     const cp = data && data.filter((item) => item._id !== updateList.itemId);
-    if (cp) setPortfolios(cp);
+    if (cp) setExperiences(cp);
     showUpdateList({ itemId: "", state: false, type: "idle" });
     showToast({
-      message: "portfolio Deleted successfully",
+      message: "experience Deleted successfully",
       position: "bottomRight",
       state: true,
       type: "success",
     });
   };
+
   return (
     <>
       <div className="w-full">
         <header className="w-full flex">
           <caption className="p-5  text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-            Portfolios
+            Experiences
             <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-              Here, you can declare your portfolio with images, title,date and
-              description for every portfolio. And you can add,delete them
+              Here, you can declare you experiences from any company,freelancer
+              works with times and title of your work on there
             </p>
           </caption>
         </header>
@@ -84,7 +86,7 @@ const Portfolios = () => {
                       />{" "}
                     </g>
                   </svg>
-                  add new portfolio
+                  add new experiences
                 </span>
                 {isOpen && (
                   <AddPortfolioModal
@@ -97,9 +99,9 @@ const Portfolios = () => {
           </PortalWithState>
         </div>
 
-        <div className="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl ">
-          <div className=" grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            <PortfolioItems portfolios={portfolios} />
+        <div className="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl mt-2 ">
+          <div className="flex w-full items-start">
+            <ExperiencesItems experiences={experiences} />
           </div>
         </div>
       </div>
@@ -107,4 +109,4 @@ const Portfolios = () => {
   );
 };
 
-export default Portfolios;
+export default Experiences;

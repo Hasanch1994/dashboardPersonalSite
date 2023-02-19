@@ -25,7 +25,6 @@ instance.interceptors.request.use(
       request.headers["x-access-token"] = "Bearer " + token;
     }
 
-    console.log("heder", request.headers);
     // Edit request config
     return request;
   },

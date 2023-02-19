@@ -32,3 +32,11 @@ export interface portfolioTypeResponse extends Pick<inboxTypeResponse,"_id"> {
   githubLink:string,
   imageUrls:Array<string>
 }
+
+export interface experiencesTypeResponse extends Pick<portfolioTypeResponse,"title" | "_id">{
+    from:string,
+    to:string,
+    text:string,
+    status:boolean
+}
+

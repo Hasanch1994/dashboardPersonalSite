@@ -8,30 +8,29 @@ export interface toastType {
   position: "bottomRight" | "topRight";
 }
 
-export interface updatePortfolioList {
+export interface deleteMoreOptionType {
   state: boolean;
   itemId: string;
+  type: "portfolio" | "experience" | "idle";
 }
 
-export interface deletePortfolioType {
-  state: boolean;
-  itemId: string;
-}
+export interface updateList extends deleteMoreOptionType {}
 
 export interface showPortfolioItem {
   item?: portfolioTypeResponse;
   portfolioItemState: boolean;
 }
 
-export interface updatePortfolioList extends deletePortfolioType {}
+export interface updatePortfolioList
+  extends Omit<deleteMoreOptionType, "type"> {}
 
 export type mainContextType = {
   toast: toastType;
   showToast: (data: toastType) => void;
-  deletePortfolio: deletePortfolioType;
-  showDeletePortfolio: (data: deletePortfolioType) => void;
-  updatePortfolio: updatePortfolioList;
-  showUpdatePortfolioList: (data: updatePortfolioList) => void;
+  moreOptionDelete: deleteMoreOptionType;
+  showMoreOptionDelete: (data: deleteMoreOptionType) => void;
+  updateList: updateList;
+  showUpdateList: (data: updateList) => void;
   portfolioItem: showPortfolioItem;
   showPortfolioItem: (data: showPortfolioItem) => void;
   addPortfolio: boolean;
@@ -51,21 +50,25 @@ const MainProvider: React.FC<ReactNode | any> = ({ children }) => {
     setToast(data);
   };
 
-  const [deletePortfolio, setShowDeletePortfolio] =
-    useState<deletePortfolioType>({
+  const [moreOptionDelete, setShowMoreOptionDelete] =
+    useState<deleteMoreOptionType>({
       itemId: "",
       state: false,
+      type: "idle",
     });
 
-  const showDeletePortfolio = (data: deletePortfolioType) => {
-    setShowDeletePortfolio(data);
+  const showMoreOptionDelete = (data: deleteMoreOptionType) => {
+    setShowMoreOptionDelete(data);
   };
 
-  const [updatePortfolio, setShowUpdatePortfolio] =
-    useState<updatePortfolioList>({ itemId: "", state: false });
+  const [updateList, setUpdateList] = useState<updateList>({
+    itemId: "",
+    state: false,
+    type: "idle",
+  });
 
-  const showUpdatePortfolioList = (data: updatePortfolioList) => {
-    setShowUpdatePortfolio(data);
+  const showUpdateList = (data: updateList) => {
+    setUpdateList(data);
   };
 
   const [portfolioItem, setShowPortfolioItem] = useState<showPortfolioItem>({
@@ -88,10 +91,10 @@ const MainProvider: React.FC<ReactNode | any> = ({ children }) => {
       value={{
         toast,
         showToast,
-        deletePortfolio,
-        showDeletePortfolio,
-        updatePortfolio,
-        showUpdatePortfolioList,
+        moreOptionDelete,
+        showMoreOptionDelete,
+        updateList,
+        showUpdateList,
         portfolioItem,
         showPortfolioItem,
         addPortfolio,

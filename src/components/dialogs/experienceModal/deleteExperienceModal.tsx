@@ -2,37 +2,41 @@ import { FC, useContext } from "react";
 import { useMutation } from "react-query";
 import JButton from "../../majors/buttons/Button";
 import OutLineButton from "../../majors/buttons/OutlineButton";
-import { deletePortfolioApi } from "../../../libs/services/endpoints/actions";
+import {
+  deleteExperiencesApi,
+  deletePortfolioApi,
+} from "../../../libs/services/endpoints/actions";
 import { MainContext, mainContextType } from "../../../contexts/mainContext";
 import withClickOutside from "../../../hocs/outsideModalClick";
 
-interface DeletePortfolioModalProps {
+interface DeleteExperienceModalProps {
   id: string;
 }
 
-const DeletePortfolioModal: FC<DeletePortfolioModalProps> = ({ id }) => {
+const DeleteExperienceModal: FC<DeleteExperienceModalProps> = ({ id }) => {
   const { showMoreOptionDelete, showUpdateList } = useContext(
     MainContext
   ) as mainContextType;
   const { mutate, isLoading } = useMutation(
-    "deletePortfolio",
-    deletePortfolioApi,
+    "deleteExperience",
+    deleteExperiencesApi,
     {
       onSuccess: () => {
         closeModal();
-        showUpdateList({ itemId: id, state: true, type: "portfolio" });
+        showUpdateList({ itemId: id, state: true, type: "experience" });
+        // showUpdatePortfolioList({ itemId: id, state: true });
       },
       onError: () => {},
     }
   );
 
-  const handleDeletePortfolio = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDeleteExperience = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     mutate(id);
   };
 
   const closeModal = () => {
-    showMoreOptionDelete({ itemId: id, state: false, type: "portfolio" });
+    showMoreOptionDelete({ itemId: id, state: false, type: "experience" });
   };
 
   return (
@@ -65,11 +69,11 @@ const DeletePortfolioModal: FC<DeletePortfolioModalProps> = ({ id }) => {
           </svg>
         </span>
         <h3 className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2">
-          Delete Portfolio
+          Delete Experience
         </h3>
       </header>
       <article className="flex flex-col w-full h-auto px-4 py-4 gap-y-4">
-        <p>Are you sure you want to delete this portfolio?</p>
+        <p>Are you sure you want to delete this experience?</p>
         <div className="grid grid-cols-2 gap-x-4">
           <OutLineButton text="Cancel" onClick={closeModal} />
           <JButton
@@ -77,7 +81,7 @@ const DeletePortfolioModal: FC<DeletePortfolioModalProps> = ({ id }) => {
             disabled={isLoading}
             loading={isLoading}
             text={"Delete"}
-            onClick={handleDeletePortfolio}
+            onClick={handleDeleteExperience}
           />
         </div>
       </article>
@@ -85,4 +89,4 @@ const DeletePortfolioModal: FC<DeletePortfolioModalProps> = ({ id }) => {
   );
 };
 
-export default withClickOutside(DeletePortfolioModal);
+export default withClickOutside(DeleteExperienceModal);

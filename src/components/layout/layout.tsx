@@ -9,10 +9,11 @@ import DeletePortfolioModal from "../dialogs/portfolioModal/deletePortfolioModal
 import PortfolioFullItem from "../dialogs/portfolioModal/portfolioFullItem";
 import "./style.css";
 import { portalNode } from "../helper/nodes";
+import DeleteExperienceModal from "../dialogs/experienceModal/deleteExperienceModal";
 
 const Layout: FC = () => {
   const location = useLocation();
-  const { toast, deletePortfolio, portfolioItem, showDeletePortfolio } =
+  const { toast, moreOptionDelete, portfolioItem, showMoreOptionDelete } =
     useContext(MainContext) as mainContextType;
 
   return (
@@ -33,12 +34,23 @@ const Layout: FC = () => {
       </Portal>
 
       <Portal node={portalNode}>
-        {deletePortfolio.state && (
+        {moreOptionDelete.state && moreOptionDelete.type === "portfolio" && (
           <DeletePortfolioModal
+            id={moreOptionDelete.itemId}
             onClickOutside={() =>
-              showDeletePortfolio({ itemId: "", state: false })
+              showMoreOptionDelete({ itemId: "", state: false, type: "idle" })
             }
-            id={deletePortfolio.itemId}
+          />
+        )}
+      </Portal>
+
+      <Portal node={portalNode}>
+        {moreOptionDelete.state && moreOptionDelete.type === "experience" && (
+          <DeleteExperienceModal
+            id={moreOptionDelete.itemId}
+            onClickOutside={() =>
+              showMoreOptionDelete({ itemId: "", state: false, type: "idle" })
+            }
           />
         )}
       </Portal>

@@ -23,3 +23,12 @@ export interface addPortfolioTypeRequest {
   githubLink: string;
   Image: File[];
 }
+
+// edit experience
+export interface editExperienceTypeRequest
+  extends Pick<addPortfolioTypeRequest, "title"> {
+  id?: string;
+  from: string;
+  to: string;
+  text: String;
+}

@@ -1,6 +1,3 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-// import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import NotFoundPage from "./components/404/NotFoundPage";
 import Login from "./components/login/login";
@@ -11,6 +8,7 @@ import Inbox from "./components/pages/inbox";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Skills from "./components/pages/skills";
 import Portfolios from "./components/pages/portfolios";
+import Experiences from "./components/pages/experiences";
 
 function App() {
   return (
@@ -24,16 +22,7 @@ function App() {
             <Route path="/inbox" element={<Inbox />} />
             <Route path="/skills" element={<Skills />} />
             <Route path="/portfolios" element={<Portfolios />} />
-
-            {/* <Route path="customers" element={<Customers />} />
-          <Route path="deals" element={<Deals />} />
-          <Route path="addCustomer/:tabName" element={<AddCustomer />} />
-          <Route path="newDeal/:customerId" element={<NewDeal />} />
-
-          <Route path="reports" element={<Reports />}>
-            <Route path="customers" element={<CustomersReports />} />
-            <Route path="deals" element={<DealsReports />} />
-          </Route> */}
+            <Route path="/experiences" element={<Experiences />} />
 
             <Route path="*" element={<NotFoundPage />} />
           </Route>

@@ -1,6 +1,7 @@
 import { msgType } from "./../../../types/defaultTypes";
 
 import {
+  experiencesTypeResponse,
   inboxTypeResponse,
   portfolioTypeResponse,
   skillTypeResponse,
@@ -8,6 +9,7 @@ import {
 import api from "../httpService";
 import {
   addSkillTypeRequest,
+  editExperienceTypeRequest,
   editSkillTypeRequest,
 } from "../../../types/reqTypes";
 
@@ -96,4 +98,35 @@ export const addPortfolioApi = async (data: any): Promise<msgType> => {
   ).data;
   if (result) return result;
   else throw new Error("failed to add new portfolio");
+};
+
+// get experiences
+export const fetchExperiencesApi = async (): Promise<
+  Array<experiencesTypeResponse>
+> => {
+  const result: Array<experiencesTypeResponse> = await (
+    await api.get("/action/getExperiences")
+  ).data;
+  if (result) return result;
+  else throw new Error("failed to fetch getExperiences");
+};
+
+// delete experience
+export const deleteExperiencesApi = async (id: string): Promise<msgType> => {
+  const result: msgType = await (
+    await api.delete(`/action/deleteExperience/${id}`)
+  ).data;
+  if (result) return result;
+  else throw new Error("failed to delete experience");
+};
+
+//update experience
+export const editExperienceApi = async (
+  data: editExperienceTypeRequest
+): Promise<msgType> => {
+  const result: msgType = await (
+    await api.put("/action/updateExperience", data)
+  ).data;
+  if (result) return result;
+  else throw new Error("failed to edit experience");
 };

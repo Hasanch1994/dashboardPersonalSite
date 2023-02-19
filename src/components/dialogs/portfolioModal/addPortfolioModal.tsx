@@ -40,10 +40,7 @@ interface Props {
 }
 
 const AddPortfolioModal: FC<Props> = ({ onClose }) => {
-  const { showDeletePortfolio, showUpdatePortfolioList, showAddPortfolio } =
-    useContext(MainContext) as mainContextType;
-
-  const [currentFileSize, setCurrentFileSize] = useState<number>(0);
+  const { showAddPortfolio } = useContext(MainContext) as mainContextType;
 
   const [errorFields, setErrorFields] = useState<ErrorFields>({
     date: false,
@@ -61,11 +58,7 @@ const AddPortfolioModal: FC<Props> = ({ onClose }) => {
 
   const { mutate, isLoading } = useMutation("addPortfolio", addPortfolioApi, {
     onSuccess: () => {
-      alert("Inserted");
       handleShowAddPortfolio(false);
-    },
-    onError: () => {
-      alert("Failed");
     },
   });
 
