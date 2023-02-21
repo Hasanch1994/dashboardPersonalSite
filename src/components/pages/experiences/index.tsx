@@ -6,6 +6,8 @@ import { PortalWithState } from "react-portal";
 import AddPortfolioModal from "../../dialogs/portfolioModal/addPortfolioModal";
 import ExperiencesItems from "./experiencesItems";
 import { MainContext, mainContextType } from "../../../contexts/mainContext";
+import { addExperienceTypeRequest } from "../../../types/reqTypes";
+import AddExperienceModal from "../../dialogs/experienceModal/addExperienceModal";
 
 const Experiences = () => {
   const { data } = useQuery("experiences", fetchExperiencesApi, {
@@ -14,9 +16,8 @@ const Experiences = () => {
     },
   });
 
-  const { updateList, showUpdateList, showToast } = useContext(
-    MainContext
-  ) as mainContextType;
+  const { updateList, showUpdateList, showToast, updateExperienceList } =
+    useContext(MainContext) as mainContextType;
 
   useEffect(() => {
     if (updateList.itemId && updateList.type === "experience")
@@ -33,6 +34,53 @@ const Experiences = () => {
     showUpdateList({ itemId: "", state: false, type: "idle" });
     showToast({
       message: "experience Deleted successfully",
+      position: "bottomRight",
+      state: true,
+      type: "success",
+    });
+  };
+
+  useEffect(() => {
+    listUpdate();
+  }, [updateExperienceList.newData._id]);
+
+  const listInsertUpdate = (exp: addExperienceTypeRequest, _id: string) => {
+    const cp = [...experiences];
+    cp.unshift({
+      _id,
+      from: exp.from,
+      to: exp.to,
+      text: exp.text,
+      title: exp.title,
+      status: exp.to ? false : true,
+    });
+
+    setExperiences(cp);
+
+    showToast({
+      message: "New experience added successfully",
+      position: "bottomRight",
+      state: true,
+      type: "success",
+    });
+  };
+
+  const listUpdate = () => {
+    const cp = [...experiences];
+    const { _id, from, to, status, text, title } = updateExperienceList.newData;
+    const findItem = cp.find((obj) => obj._id === _id);
+    if (findItem) {
+      findItem.from = from;
+      findItem.to = to;
+      findItem.text = text;
+      findItem.title = title;
+      findItem.status = status;
+    }
+
+    setExperiences(cp);
+
+    showToast({
+      message: "experiences updated successfully",
       position: "bottomRight",
       state: true,
       type: "success",
@@ -89,9 +137,10 @@ const Experiences = () => {
                   add new experiences
                 </span>
                 {isOpen && (
-                  <AddPortfolioModal
+                  <AddExperienceModal
                     onClose={closePortal}
                     onClickOutside={closePortal}
+                    onUpdate={listInsertUpdate}
                   />
                 )}
               </>

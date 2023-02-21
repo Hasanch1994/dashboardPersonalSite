@@ -4,16 +4,22 @@ import JInput from "../../majors/input/Input";
 import JButton from "../../majors/buttons/Button";
 import OutLineButton from "../../majors/buttons/OutlineButton";
 import { useMutation } from "react-query";
-import { editExperienceTypeRequest } from "../../../types/reqTypes";
-import { editExperienceApi } from "../../../libs/services/endpoints/actions";
+import {
+  addExperienceTypeRequest,
+  editExperienceTypeRequest,
+} from "../../../types/reqTypes";
+import {
+  addExperienceApi,
+  editExperienceApi,
+} from "../../../libs/services/endpoints/actions";
 import { messages } from "../../../messages";
 import { experiencesTypeResponse } from "../../../types/respTypes";
 import withClickOutside from "../../../hocs/outsideModalClick";
 import { MainContext, mainContextType } from "../../../contexts/mainContext";
 
-interface editExperienceModalProps {
+interface addExperienceModalProps {
   onClose(): void;
-  preData: experiencesTypeResponse;
+  onUpdate(data: addExperienceTypeRequest, _id: string): void;
 }
 
 interface FormValueType {
@@ -36,22 +42,18 @@ interface Errors {
   [key: string]: boolean;
 }
 
-const EditExperienceModal: FC<editExperienceModalProps> = ({
+const EditExperienceModal: FC<addExperienceModalProps> = ({
   onClose,
-  preData,
+  onUpdate,
 }) => {
-  const { updateExperienceUpdateList } = useContext(
-    MainContext
-  ) as mainContextType;
-
   const [formValues, setFormValues] = useState<FormValueType>({
-    from: preData.from,
-    to: preData.to,
-    text: preData.text,
-    title: preData.title,
+    from: "",
+    to: "",
+    text: "",
+    title: "",
   });
 
-  const [toChecked, setToChecked] = useState<boolean>(preData.status ?? false);
+  const [toChecked, setToChecked] = useState<boolean>(false);
 
   const [errorFields, setErrorFields] = useState<ErrorFields>({
     from: false,
@@ -60,27 +62,23 @@ const EditExperienceModal: FC<editExperienceModalProps> = ({
     to: false,
   });
 
-  const { mutate, isLoading } = useMutation(
-    "editExperience",
-    editExperienceApi,
-    {
-      onSuccess: () => {
-        onClose();
-
-        // create data
-        const data: experiencesTypeResponse = {
-          _id: preData._id,
-          title: formValues.title,
-          from: formValues.from,
-          to: formValues.to,
-          text: formValues.text,
-          status: toChecked ? true : false,
-        };
-        updateExperienceUpdateList({ newData: data });
-      },
-      onError: () => {},
-    }
-  );
+  const { mutate, isLoading } = useMutation("addExperience", addExperienceApi, {
+    onSuccess: (data) => {
+      onClose();
+      if (data._id) {
+        onUpdate(
+          {
+            from: formValues.from,
+            text: formValues.text,
+            title: formValues.title,
+            to: formValues.to,
+          },
+          data._id
+        );
+      }
+    },
+    onError: () => {},
+  });
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -116,8 +114,7 @@ const EditExperienceModal: FC<editExperienceModalProps> = ({
     );
 
     if (hasAllRequiredFields) {
-      const data: editExperienceTypeRequest = {
-        id: preData._id,
+      const data: addExperienceTypeRequest = {
         title: formValues.title,
         from: formValues.from,
         to: toChecked ? "" : formValues.to,
@@ -127,7 +124,7 @@ const EditExperienceModal: FC<editExperienceModalProps> = ({
       try {
         mutate(data);
       } catch (err) {
-        throw "failed to edit experience";
+        throw "failed to add experience";
       }
     } else {
       const errorFields = requiredFields.reduce((errors: Errors, field) => {
@@ -141,23 +138,26 @@ const EditExperienceModal: FC<editExperienceModalProps> = ({
   };
 
   const [dateValue, setDateValue] = useState({
-    from: preData.from
-      ? new Date(preData.from).toISOString().substr(0, 10)
-      : "",
-    to: preData.to ? new Date(preData.to).toISOString().substr(0, 10) : "",
+    from: "",
+    to: "",
   });
 
   useEffect(() => {
-    setDateValue((prevValues) => ({
-      ...prevValues,
-      ["from"]: new Date(formValues.from).toISOString().substr(0, 10),
-    }));
+    if (formValues.from.length > 0)
+      setDateValue((prevValues) => ({
+        ...prevValues,
+        from: new Date(formValues.from).toISOString().substr(0, 10),
+      }));
   }, [formValues.from]);
 
   useEffect(() => {
     setDateValue((prevValues) => ({
       ...prevValues,
-      to: toChecked ? "" : new Date(formValues.to).toISOString().substr(0, 10),
+      to: toChecked
+        ? ""
+        : formValues.to.length > 0
+        ? new Date(formValues.to).toISOString().substr(0, 10)
+        : "",
     }));
   }, [formValues.to]);
 
@@ -192,7 +192,7 @@ const EditExperienceModal: FC<editExperienceModalProps> = ({
         </span>
 
         <h3 className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2">
-          edit experience
+          add experience
         </h3>
       </header>
 
@@ -292,7 +292,7 @@ const EditExperienceModal: FC<editExperienceModalProps> = ({
             <JButton
               disabled={isLoading}
               loading={isLoading}
-              text={"edit"}
+              text={"save"}
               onClick={handleEditExperience}
             />
           </div>

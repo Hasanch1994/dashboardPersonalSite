@@ -30,5 +30,9 @@ export interface editExperienceTypeRequest
   id?: string;
   from: string;
   to: string;
-  text: String;
+  text: string;
 }
+
+// add experience
+export interface addExperienceTypeRequest
+  extends Omit<editExperienceTypeRequest, "id"> {}

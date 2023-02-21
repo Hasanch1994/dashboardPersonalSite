@@ -1,5 +1,10 @@
 import React, { ReactNode, createContext, useState } from "react";
-import { portfolioTypeResponse } from "../types/respTypes";
+import {
+  experiencesTypeResponse,
+  portfolioTypeResponse,
+} from "../types/respTypes";
+import { editExperienceTypeRequest } from "../types/reqTypes";
+import { defaultMoreOptionUpdateData } from "./resetData";
 
 export interface toastType {
   state: boolean;
@@ -14,6 +19,11 @@ export interface deleteMoreOptionType {
   type: "portfolio" | "experience" | "idle";
 }
 
+export interface updateMoreOptionType {
+  state: boolean;
+  data: editExperienceTypeRequest;
+}
+
 export interface updateList extends deleteMoreOptionType {}
 
 export interface showPortfolioItem {
@@ -24,17 +34,25 @@ export interface showPortfolioItem {
 export interface updatePortfolioList
   extends Omit<deleteMoreOptionType, "type"> {}
 
+interface updateExperienceListType {
+  newData: experiencesTypeResponse;
+}
+
 export type mainContextType = {
   toast: toastType;
   showToast: (data: toastType) => void;
   moreOptionDelete: deleteMoreOptionType;
   showMoreOptionDelete: (data: deleteMoreOptionType) => void;
+  moreOptionUpdate: updateMoreOptionType;
+  showMoreOptionUpdate: (data: updateMoreOptionType) => void;
   updateList: updateList;
   showUpdateList: (data: updateList) => void;
   portfolioItem: showPortfolioItem;
   showPortfolioItem: (data: showPortfolioItem) => void;
   addPortfolio: boolean;
   showAddPortfolio: (state: boolean) => void;
+  updateExperienceList: updateExperienceListType;
+  updateExperienceUpdateList: (data: updateExperienceListType) => void;
 };
 
 export const MainContext = createContext<mainContextType | null>(null);
@@ -59,6 +77,13 @@ const MainProvider: React.FC<ReactNode | any> = ({ children }) => {
 
   const showMoreOptionDelete = (data: deleteMoreOptionType) => {
     setShowMoreOptionDelete(data);
+  };
+
+  const [moreOptionUpdate, setShowMoreOptionUpdate] =
+    useState<updateMoreOptionType>(defaultMoreOptionUpdateData);
+
+  const showMoreOptionUpdate = (data: updateMoreOptionType) => {
+    setShowMoreOptionUpdate(data);
   };
 
   const [updateList, setUpdateList] = useState<updateList>({
@@ -86,6 +111,22 @@ const MainProvider: React.FC<ReactNode | any> = ({ children }) => {
     setAddPortfolio(state);
   };
 
+  const [updateExperienceList, setUpdateExperienceList] =
+    useState<updateExperienceListType>({
+      newData: {
+        _id: "",
+        from: "",
+        status: false,
+        text: "",
+        title: "",
+        to: "",
+      },
+    });
+
+  const updateExperienceUpdateList = (data: updateExperienceListType) => {
+    setUpdateExperienceList(data);
+  };
+
   return (
     <MainContext.Provider
       value={{
@@ -93,12 +134,16 @@ const MainProvider: React.FC<ReactNode | any> = ({ children }) => {
         showToast,
         moreOptionDelete,
         showMoreOptionDelete,
+        moreOptionUpdate,
+        showMoreOptionUpdate,
         updateList,
         showUpdateList,
         portfolioItem,
         showPortfolioItem,
         addPortfolio,
         showAddPortfolio,
+        updateExperienceList,
+        updateExperienceUpdateList,
       }}
     >
       {children}

@@ -8,6 +8,7 @@ import {
 } from "./../../../types/respTypes";
 import api from "../httpService";
 import {
+  addExperienceTypeRequest,
   addSkillTypeRequest,
   editExperienceTypeRequest,
   editSkillTypeRequest,
@@ -129,4 +130,15 @@ export const editExperienceApi = async (
   ).data;
   if (result) return result;
   else throw new Error("failed to edit experience");
+};
+
+//add experience
+export const addExperienceApi = async (
+  data: addExperienceTypeRequest
+): Promise<msgType> => {
+  const result: msgType = await (
+    await api.post("/action/addExperience", data)
+  ).data;
+  if (result) return result;
+  else throw new Error("failed to add new experience");
 };

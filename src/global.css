@@ -10,6 +10,15 @@ body {
 
 }
 
+/* Disable text selection for most tags */
+*:not(p,input) {
+  user-select: none;
+}
+
+/* Allow text selection for p,input tags */
+p,input {
+  user-select: auto;
+}
 
 
 
@@ -114,3 +123,8 @@ button[class="outlinedButton"]{
     opacity: 1;
   }
 }
+
+label{
+  @apply text-gray-800 font-medium
+}
+

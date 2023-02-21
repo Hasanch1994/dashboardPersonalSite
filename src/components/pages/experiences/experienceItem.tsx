@@ -1,6 +1,7 @@
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { experiencesTypeResponse } from "../../../types/respTypes";
 import MoreOption from "../../popover/moreOption";
+import { MainContext, mainContextType } from "../../../contexts/mainContext";
 
 interface Props {
   data: experiencesTypeResponse;
@@ -8,7 +9,7 @@ interface Props {
 
 const ExperienceItem: FC<Props> = ({ data }) => {
   const [showMore, setShowMore] = useState<boolean>(false);
-
+  const { showMoreOptionUpdate } = useContext(MainContext) as mainContextType;
   const handlePopoverClick = (event: any) => {
     event.stopPropagation();
     setShowMore((prev) => !prev);
@@ -17,13 +18,14 @@ const ExperienceItem: FC<Props> = ({ data }) => {
   function handleClickOutside() {
     setShowMore(false);
   }
+  console.log(data.to, data.status);
 
   return (
     <li className="mb-4 ml-4 flex flex-col gap-y-2">
       <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white "></div>
       <div className="w-full flex justify-between">
         <time className="mb-1 text-sm font-normal leading-none text-gray-500 ">
-          {data.from} until {data.status ? "now" : data.to}
+          {data.from} until {!data.to ? "now" : data.to}
         </time>
 
         <span className="relative cursor-pointer" onClick={handlePopoverClick}>
@@ -44,7 +46,7 @@ const ExperienceItem: FC<Props> = ({ data }) => {
             type="experience"
             onClickOutside={handleClickOutside}
             show={showMore}
-            showEdit={() => {}}
+            showEdit={() => showMoreOptionUpdate({ state: true, data: data })}
           />
         </span>
       </div>

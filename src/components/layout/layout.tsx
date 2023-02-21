@@ -10,12 +10,23 @@ import PortfolioFullItem from "../dialogs/portfolioModal/portfolioFullItem";
 import "./style.css";
 import { portalNode } from "../helper/nodes";
 import DeleteExperienceModal from "../dialogs/experienceModal/deleteExperienceModal";
+import EditExperienceModal from "../dialogs/experienceModal/editExperienceModal";
+import { defaultMoreOptionUpdateData } from "../../contexts/resetData";
 
 const Layout: FC = () => {
   const location = useLocation();
-  const { toast, moreOptionDelete, portfolioItem, showMoreOptionDelete } =
-    useContext(MainContext) as mainContextType;
+  const {
+    toast,
+    moreOptionDelete,
+    portfolioItem,
+    showMoreOptionDelete,
+    moreOptionUpdate,
+    showMoreOptionUpdate,
+  } = useContext(MainContext) as mainContextType;
 
+  const resetUpdateData = () => {
+    showMoreOptionUpdate(defaultMoreOptionUpdateData);
+  };
   return (
     <div className="w-full h-full flex flex-col sm:flex-row">
       {location.pathname !== "/login" && <SideBar />}
@@ -60,6 +71,17 @@ const Layout: FC = () => {
           <PortfolioFullItem />
         </Portal>
       )}
+
+      <Portal node={portalNode}>
+        {moreOptionUpdate.state && (
+          <EditExperienceModal
+            preData={moreOptionUpdate.data}
+            onClickOutside={resetUpdateData}
+            onUpdate={() => {}}
+            onClose={resetUpdateData}
+          />
+        )}
+      </Portal>
     </div>
   );
 };
